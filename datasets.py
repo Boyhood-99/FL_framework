@@ -1,6 +1,3 @@
-
-
-import torch 
 from torchvision import datasets, transforms
 
 def get_dataset(dir, name):
