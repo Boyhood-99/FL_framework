@@ -2,7 +2,8 @@ import argparse, json
 import datetime
 import os
 import logging
-import torch, random
+import torch
+import random
 import pandas as pd
 from server import *
 from client import *
@@ -30,13 +31,13 @@ def main():
 	# print(type(conf))
 	train_datasets, eval_datasets = datasets.get_dataset("./data/", conf["type"])
 	
-	server = Server(conf, eval_datasets)
+	server = Server(conf, eval_datasets, compile=conf['compile'])
 	clients = []
 	
 	for uav_id in range(conf['num_f_uav']):
-		clients.append(Client(conf, server.global_model, train_datasets, uav_id))
+		clients.append(Client(conf, server.global_model, train_datasets, uav_id, conf['compile']))
 
-		
+
 	df_list = []
 	for global_epoch in tqdm(range(conf["global_epochs"])):
 	
@@ -79,6 +80,7 @@ def main():
 	return df
 if __name__ == '__main__':
 	print(torch.cuda.is_available())
+	print(torch.__version__)
 
 
 	main()

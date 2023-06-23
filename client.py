@@ -5,11 +5,13 @@ import torch.utils.data as DATA
 
 class Client(object):
 
-	def __init__(self, conf, model, train_dataset, id = -1):
+	def __init__(self, conf, model, train_dataset, id = -1, compile = False):
 		
 		self.conf = conf
 		
 		self.local_model = models.get_model(self.conf["model_name"]) 
+		if compile:
+			self.local_model = torch.compile(self.local_model)
 		
 		self.client_id = id
 		
@@ -74,7 +76,10 @@ class Client(object):
 		diff = dict()
 		for name, data in self.local_model.state_dict().items():
 			diff[name] = (data - global_model.state_dict()[name])
-			#print(diff[name])
+			
+			# diff[name] = data.sub_(global_model.state_dict()[name])
+			
+			
 			
 		return diff , loss_dic
 		

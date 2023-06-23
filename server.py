@@ -1,18 +1,24 @@
 import models
 import torch
 
+#in-place 操作可能会覆盖计算梯度所需的值。
+
+#每个 in-place 操作实际上都需要重写计算图的实现。out-of-place只是分配新对象并保留对旧计算图的引用，
+# 而 in-place 操作则需要将所有输入的创建更改为代表此操作的函数。
 
 class Server(object):
 	
-	def __init__(self, conf, eval_dataset):
+	def __init__(self, conf, eval_dataset, compile):
 	
 		self.conf = conf 
 		
 		self.global_model = models.get_model(self.conf["model_name"]) 
+		if compile:
+			self.global_model = torch.compile(self.global_model) 
 		
 		self.eval_loader = torch.utils.data.DataLoader(eval_dataset, batch_size=self.conf["batch_size"], shuffle=True)
 		
-	
+	#模型聚合，不需保留梯度
 	def model_aggregate(self, weight_accumulator):
 		for name, data in self.global_model.state_dict().items():
 			
