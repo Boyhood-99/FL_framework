@@ -26,8 +26,6 @@ def main():
 		conf = json.load(f)	
 	
 	
-
-	
 	# print(type(conf))
 	train_datasets, eval_datasets = datasets.get_dataset("./data/", conf["type"])
 	
@@ -81,7 +79,6 @@ def main():
 if __name__ == '__main__':
 	print(torch.cuda.is_available())
 	print(torch.__version__)
-
 
 	main()
 				

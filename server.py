@@ -18,7 +18,7 @@ class Server(object):
 		
 		self.eval_loader = torch.utils.data.DataLoader(eval_dataset, batch_size=self.conf["batch_size"], shuffle=True)
 		
-	#模型聚合，不需保留梯度
+	
 	def model_aggregate(self, weight_accumulator):
 		for name, data in self.global_model.state_dict().items():
 			

@@ -30,7 +30,7 @@ class Client(object):
 		# )
 		##自定义样本数量
 		num_sample = np.random.randint(80,100)
-		self.train_loader = DATA.DataLoader(self.train_dataset, batch_size = conf["batch_size"],  num_workers=2, 
+		self.train_loader = DATA.DataLoader(self.train_dataset, batch_size = conf["batch_size"],  num_workers=8, 
 							drop_last =True, pin_memory=True,sampler = DATA.sampler.SubsetRandomSampler(
 							list(np.random.choice(train_indices, num_sample)))
 							# shuffle=True,
